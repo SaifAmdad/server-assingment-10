@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Assingment-10 server",
+  "keywords": [
+    "assingment-10"
+  ],
+  "homepage": "https://github.com/SaifAmdad/server-assingment-10#readme",
+  "bugs": {
+    "url": "https://github.com/SaifAmdad/server-assingment-10/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaifAmdad/server-assingment-10.git"
+  },
+  "license": "ISC",
+  "author": "SaifAmdad",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.3.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jose-cjs": "^6.2.3",
+    "mongoose": "^9.7.4",
+    "nodemon": "^3.1.14"
+  }
+}
