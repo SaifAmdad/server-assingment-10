@@ -7,6 +7,9 @@ const promptSchema = new Schema(
       ref: "user",
       required: [true, "User ID is required."],
     },
+    img: {
+      type: String,
+    },
 
     title: {
       type: String,

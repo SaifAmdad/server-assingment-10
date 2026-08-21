@@ -1,4 +1,5 @@
 const PromptModel = require("../models/promptModel");
+const reviewModel = require("../models/reviewRatingModel");
 const userModel = require("../models/userModel");
 
 const createPrompt = async (req, res) => {
@@ -90,11 +91,16 @@ const getPrompt = async (req, res) => {
     }
     const user = await userModel.findById(prompt.creatorID);
 
+    const review = await reviewModel.find({ promptId: prompt._id });
+
+    console.log(review);
+
     res.status(200).send({
       success: true,
       message: "Prompt has been returned successfully",
       prompt,
       user,
+      review,
     });
   } catch (error) {
     res.status(500).send({
@@ -104,4 +110,72 @@ const getPrompt = async (req, res) => {
   }
 };
 
-module.exports = { createPrompt, getAllPrompts, getPrompt };
+const deletePrompt = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const prompt = await PromptModel.findById(id);
+
+    if (!prompt) {
+      return res.status(404).send({
+        success: false,
+        message: "Prompt not found with this id",
+      });
+    }
+
+    const deletedRatings = await reviewModel.deleteMany({
+      promptId: prompt._id,
+    });
+
+    console.log(deletedRatings);
+    const deletedPrompt = await PromptModel.findByIdAndDelete(id);
+
+    res.status(200).send({
+      success: true,
+      message: "Prompt has been deleted successfully",
+      deletedPrompt,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error._message,
+    });
+  }
+};
+
+const updatePrompt = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateInfo = req.body;
+
+    const prompt = await PromptModel.findById(id);
+
+    if (!prompt) {
+      return res.status(404).send({
+        success: false,
+        message: "Prompt not found with this id",
+      });
+    }
+
+    const updatedPrompt = await PromptModel.findByIdAndUpdate(id, updateInfo);
+
+    res.status(200).send({
+      success: true,
+      message: "Prompt has been updated successfully",
+      updatedPrompt,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error._message,
+    });
+  }
+};
+
+module.exports = {
+  createPrompt,
+  getAllPrompts,
+  getPrompt,
+  deletePrompt,
+  updatePrompt,
+};
