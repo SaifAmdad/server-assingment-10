@@ -4,7 +4,6 @@ const PromptModel = require("../models/promptModel");
 const bookmarkPost = async (req, res) => {
   try {
     const bookmark = req.body;
-    console.log(bookmark);
 
     const prompt = await PromptModel.findById(bookmark.promptId);
     if (!prompt) {
@@ -25,6 +24,23 @@ const bookmarkPost = async (req, res) => {
     res.status(500).send({
       success: false,
       message: error._message,
+    });
+  }
+};
+
+const getBookmark = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const bookmark = await bookmarkModel.find({ userId });
+    res.status(200).send({
+      success: true,
+      message: "Bookmark were returned successfully",
+      payload: bookmark,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: `${error._message} server-Error`,
     });
   }
 };
@@ -54,4 +70,4 @@ const deleteBookmark = async (req, res) => {
   }
 };
 
-module.exports = { bookmarkPost, deleteBookmark };
+module.exports = { bookmarkPost, deleteBookmark, getBookmark };

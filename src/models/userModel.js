@@ -13,6 +13,9 @@ const userSchema = new Schema({
   role: {
     type: String,
   },
+  plan: {
+    type: String,
+  },
 });
 
 const userModel = model("user", userSchema, "user");

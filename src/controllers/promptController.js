@@ -14,9 +14,6 @@ const createPrompt = async (req, res) => {
       });
     }
 
-    prompt.creator = user?.name;
-    prompt.creatorImg = user?.image;
-
     const newPrompt = await PromptModel.create(prompt);
 
     res.status(200).send({
@@ -36,15 +33,28 @@ const createPrompt = async (req, res) => {
 const getAllPrompts = async (req, res) => {
   try {
     const search = req.query.search || "";
+    // const category = req.query.category || "";
+    // const aiToolName = req.query.aiToolName || "";
+    // const difficultyLevel = req.query.difficultyLevel || "";
+    const filtered = req.query.filtered || "";
     const limit = Number(req.query.limit) || 9;
     const page = Number(req.query.page) || 1;
 
     const searchRegExp = new RegExp(".*" + search + ".*", "i");
+    const filteredRegExp = new RegExp(filtered, "i");
 
     const filter = {
+      // status: { $eq: "approved" },
       $or: [
         { title: { $regex: searchRegExp } },
-        { description: { $regex: searchRegExp } },
+        { aiToolName: { $regex: searchRegExp } },
+        { tags: { $regex: searchRegExp } },
+      ],
+
+      $or: [
+        { category: { $regex: filteredRegExp } },
+        { aiToolName: { $regex: filteredRegExp } },
+        { difficultyLevel: { $regex: filteredRegExp } },
       ],
     };
 
@@ -69,6 +79,27 @@ const getAllPrompts = async (req, res) => {
             page + 1 <= Math.ceil(totalPrompts / limit) ? page + 1 : null,
         },
       },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: error._message,
+    });
+  }
+};
+
+const getPromptByCreatorId = async (req, res) => {
+  try {
+    const id = req.userId;
+
+    const prompts = await PromptModel.find({ creatorID: id });
+    const count = await PromptModel.find({ creatorID: id }).countDocuments();
+    res.status(200).send({
+      success: true,
+      message: "Prompt has returned successfully",
+      count,
+      payload: prompts,
     });
   } catch (error) {
     console.log(error);
@@ -178,4 +209,5 @@ module.exports = {
   getPrompt,
   deletePrompt,
   updatePrompt,
+  getPromptByCreatorId,
 };

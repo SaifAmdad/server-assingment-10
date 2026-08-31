@@ -1,15 +1,19 @@
+const { joseKeyUrl } = require("../secrets");
+
+const { createRemoteJWKSet, jwtVerify } = require("jose-cjs");
+
 const isLogin = async (req, res, next) => {
   try {
     const token = req.headers?.auth;
-    // const JWTS = createRemoteJWKSet(new URL(joseKeyUrl));
 
-    // const { payload } = await jwtVerify(token, JWTS, {});
+    const JWTS = createRemoteJWKSet(new URL(joseKeyUrl));
 
-    // if (!payload) {
-    //   return res.status(300).send({
-    //     message: "not verified",
-    //   });
-    // }
+    const { payload } = await jwtVerify(token, JWTS, {});
+    if (!payload) {
+      return res.status(300).send({
+        message: "not verified",
+      });
+    }
 
     // id as string
     req.userId = payload.id;
@@ -18,7 +22,7 @@ const isLogin = async (req, res, next) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: error._message,
+      message: `${error._message} auth-Error`,
     });
   }
 };

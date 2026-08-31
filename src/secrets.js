@@ -3,5 +3,6 @@ dotenv.config();
 
 const port = process.env.PORT;
 const dbLink = process.env.MONGODB_URL;
+const joseKeyUrl = process.env.JOSE_KEY_URL;
 
-module.exports = { port, dbLink };
+module.exports = { port, dbLink, joseKeyUrl };
