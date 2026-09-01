@@ -33,30 +33,39 @@ const createPrompt = async (req, res) => {
 const getAllPrompts = async (req, res) => {
   try {
     const search = req.query.search || "";
-    // const category = req.query.category || "";
-    // const aiToolName = req.query.aiToolName || "";
-    // const difficultyLevel = req.query.difficultyLevel || "";
+
     const filtered = req.query.filtered || "";
-    const limit = Number(req.query.limit) || 9;
+    const limit = Number(req.query.limit) || 4;
     const page = Number(req.query.page) || 1;
 
     const searchRegExp = new RegExp(".*" + search + ".*", "i");
     const filteredRegExp = new RegExp(filtered, "i");
 
-    const filter = {
+    let filter = {
       // status: { $eq: "approved" },
-      $or: [
-        { title: { $regex: searchRegExp } },
-        { aiToolName: { $regex: searchRegExp } },
-        { tags: { $regex: searchRegExp } },
-      ],
-
-      $or: [
-        { category: { $regex: filteredRegExp } },
-        { aiToolName: { $regex: filteredRegExp } },
-        { difficultyLevel: { $regex: filteredRegExp } },
-      ],
     };
+
+    if (search) {
+      filter = {
+        // status: { $eq: "approved" },
+        $or: [
+          { title: { $regex: searchRegExp } },
+          { aiToolName: { $regex: searchRegExp } },
+          { tags: { $regex: searchRegExp } },
+        ],
+      };
+    }
+
+    if (filtered) {
+      filter = {
+        // status: { $eq: "approved" },
+        $or: [
+          { category: { $regex: filteredRegExp } },
+          { aiToolName: { $regex: filteredRegExp } },
+          { difficultyLevel: { $regex: filteredRegExp } },
+        ],
+      };
+    }
 
     const prompts = await PromptModel.find(filter, {})
       .limit(limit)
