@@ -35,7 +35,7 @@ const getAllPrompts = async (req, res) => {
     const search = req.query.search || "";
 
     const filtered = req.query.filtered || "";
-    const limit = Number(req.query.limit) || 4;
+    const limit = Number(req.query.limit) || 6;
     const page = Number(req.query.page) || 1;
 
     const searchRegExp = new RegExp(".*" + search + ".*", "i");

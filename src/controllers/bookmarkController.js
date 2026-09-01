@@ -4,6 +4,7 @@ const PromptModel = require("../models/promptModel");
 const bookmarkPost = async (req, res) => {
   try {
     const bookmark = req.body;
+    console.log(bookmark);
 
     const prompt = await PromptModel.findById(bookmark.promptId);
     if (!prompt) {

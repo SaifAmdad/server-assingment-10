@@ -4,10 +4,11 @@ const {
   deleteBookmark,
   getBookmark,
 } = require("../controllers/bookmarkController");
+const { isLogin } = require("../validator/auth");
 
 const bookmarkRouter = express.Router();
 
-bookmarkRouter.post("/bookmark", bookmarkPost);
-bookmarkRouter.delete("/bookmark/:id", deleteBookmark);
-bookmarkRouter.get("/bookmark/:id", getBookmark);
+bookmarkRouter.post("/bookmark", isLogin, bookmarkPost);
+bookmarkRouter.delete("/bookmark/:id", isLogin, deleteBookmark);
+bookmarkRouter.get("/bookmark/:id", isLogin, getBookmark);
 module.exports = bookmarkRouter;
