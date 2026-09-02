@@ -3,6 +3,7 @@ const cors = require("cors");
 const promptRouter = require("./routers/promptRouter");
 const reviewRouter = require("./routers/reviewRouter");
 const bookmarkRouter = require("./routers/bookmarkRouter");
+const reportRouter = require("./routers/reportRouter");
 const app = express();
 
 app.use(cors());
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(promptRouter);
 app.use(reviewRouter);
 app.use(bookmarkRouter);
+app.use(reportRouter);
 
 app.get("/", (req, res) => {
   res.json({

@@ -38,6 +38,7 @@ const reviewPost = async (req, res) => {
   }
 };
 
+// Get review by prompt ID
 const getReview = async (req, res) => {
   try {
     const id = req.params.id;
@@ -54,4 +55,38 @@ const getReview = async (req, res) => {
   }
 };
 
-module.exports = { reviewPost, getReview };
+// get review by user ID
+const getReviewsByUserId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const reviews = await reviewModel.find({ reviewerId: id });
+    res.status(200).send({
+      success: true,
+      payload: reviews,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error._message,
+    });
+  }
+};
+
+// get review by user ID
+const deleteReview = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const review = await reviewModel.findByIdAndDelete(id);
+    res.status(200).send({
+      success: true,
+      review,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error._message,
+    });
+  }
+};
+
+module.exports = { reviewPost, getReview, getReviewsByUserId, deleteReview };

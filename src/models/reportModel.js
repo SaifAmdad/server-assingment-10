@@ -1,36 +1,29 @@
 const { Schema, model } = require("mongoose");
 
-const reviewRatingSchema = new Schema(
+const reportSchema = new Schema(
   {
     promptId: {
       type: Schema.Types.ObjectId,
       ref: "prompts",
       required: [true, "Prompt ID is required."],
     },
-    rating: {
-      type: Number,
+    reason: {
+      type: String,
       required: [true, "Rating is required."],
     },
 
-    comment: {
+    message: {
       type: String,
       required: [true, "Review is required."],
     },
-    reviewerId: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: [true, "User ID is required."],
-    },
-    reviewerImg: {
-      type: String,
-    },
-    reviewer: {
-      type: String,
-      required: [true, "Reviewer Name is required"],
     },
   },
   { timestamps: true },
 );
 
-const reviewModel = model("reviews", reviewRatingSchema);
-module.exports = reviewModel;
+const ReportModel = model("report", reportSchema);
+module.exports = ReportModel;
