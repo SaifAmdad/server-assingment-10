@@ -16,6 +16,10 @@ const reportSchema = new Schema(
       type: String,
       required: [true, "Review is required."],
     },
+    promptTitle: {
+      type: String,
+      required: [true, "Title is required."],
+    },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "user",
