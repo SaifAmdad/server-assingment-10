@@ -3,10 +3,9 @@ const PromptModel = require("../models/promptModel");
 
 const bookmarkPost = async (req, res) => {
   try {
-    const bookmark = req.body;
-    console.log(bookmark);
+    const { promptTitle, promptId, userId, promptCategory } = req.body;
 
-    const prompt = await PromptModel.findById(bookmark.promptId);
+    const prompt = await PromptModel.findById(promptId);
     if (!prompt) {
       return res.status(404).send({
         success: false,
@@ -14,7 +13,18 @@ const bookmarkPost = async (req, res) => {
       });
     }
 
-    const newBookmark = await bookmarkModel.create(bookmark);
+    await PromptModel.findByIdAndUpdate(prompt._id, {
+      $inc: {
+        bookmarkCount: 1,
+      },
+    });
+
+    const newBookmark = await bookmarkModel.create({
+      promptTitle,
+      promptId,
+      userId,
+      promptCategory,
+    });
 
     res.status(200).send({
       success: true,
@@ -24,7 +34,7 @@ const bookmarkPost = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: error._message,
+      message: `${error._message} Server-Error`,
     });
   }
 };
@@ -71,4 +81,35 @@ const deleteBookmark = async (req, res) => {
   }
 };
 
-module.exports = { bookmarkPost, deleteBookmark, getBookmark };
+const copyCountInc = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const prompt = await PromptModel.findById(id);
+    console.log(prompt);
+    if (!prompt) {
+      return res.status(404).send({
+        success: false,
+        message: "Prompt not found with this id",
+      });
+    }
+
+    await PromptModel.findByIdAndUpdate(prompt._id, {
+      $inc: {
+        copyCount: 1,
+      },
+    });
+
+    res.status(200).send({
+      success: true,
+      message: "Bookmark created successfully",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: `${error._message} Server-Error`,
+    });
+  }
+};
+
+module.exports = { bookmarkPost, deleteBookmark, getBookmark, copyCountInc };

@@ -44,6 +44,10 @@ const promptSchema = new Schema(
       type: Number,
       default: 0,
     },
+    bookmarkCount: {
+      type: Number,
+      default: 0,
+    },
     visibility: {
       type: String,
       required: [true, "Prompt Visibility (Public/Privet) is required."],
