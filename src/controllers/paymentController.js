@@ -1,4 +1,5 @@
 const PaymentModel = require("../models/paymentModel");
+const userModel = require("../models/userModel");
 
 const getPayments = async (req, res) => {
   try {
@@ -19,6 +20,8 @@ const getPayments = async (req, res) => {
 const postPayment = async (req, res) => {
   try {
     const paymentInfo = req.body;
+    const id = req.params.id;
+    await userModel.findByIdAndUpdate(id, { plan: "premium" });
     const payments = await PaymentModel.create(paymentInfo);
     res.status(200).send({
       success: true,

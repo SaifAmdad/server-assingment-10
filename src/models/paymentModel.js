@@ -18,6 +18,10 @@ const paymentSchema = new Schema(
     payerImage: {
       type: String,
     },
+    status: {
+      type: String,
+      default: "Paid",
+    },
   },
   { timestamps: true },
 );

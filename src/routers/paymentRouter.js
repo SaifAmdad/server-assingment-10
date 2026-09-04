@@ -8,6 +8,6 @@ const {
 const paymentRouter = express.Router();
 
 paymentRouter.get("/payments", isLogin, isAdmin, getPayments);
-paymentRouter.post("/payments", isLogin, postPayment);
+paymentRouter.post("/payment/:id", isLogin, postPayment);
 
 module.exports = paymentRouter;
