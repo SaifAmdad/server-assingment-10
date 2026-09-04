@@ -5,6 +5,7 @@ const reviewRouter = require("./routers/reviewRouter");
 const bookmarkRouter = require("./routers/bookmarkRouter");
 const reportRouter = require("./routers/reportRouter");
 const userRouter = require("./routers/userRouter");
+const paymentRouter = require("./routers/paymentRouter");
 const app = express();
 
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(reviewRouter);
 app.use(bookmarkRouter);
 app.use(reportRouter);
 app.use(userRouter);
+app.use(paymentRouter);
 
 app.get("/", (req, res) => {
   res.json({
