@@ -42,12 +42,12 @@ const getAllPrompts = async (req, res) => {
     const filteredRegExp = new RegExp(filtered, "i");
 
     let filter = {
-      // status: { $eq: "approved" },
+      status: { $eq: "approved" },
     };
 
     if (search) {
       filter = {
-        // status: { $eq: "approved" },
+        status: { $eq: "approved" },
         $or: [
           { title: { $regex: searchRegExp } },
           { aiToolName: { $regex: searchRegExp } },
@@ -58,7 +58,7 @@ const getAllPrompts = async (req, res) => {
 
     if (filtered) {
       filter = {
-        // status: { $eq: "approved" },
+        status: { $eq: "approved" },
         $or: [
           { category: { $regex: filteredRegExp } },
           { aiToolName: { $regex: filteredRegExp } },
@@ -219,7 +219,7 @@ const getAllPromptsByAdmin = async (req, res) => {
     const search = req.query.search || "";
 
     const filtered = req.query.filtered || "";
-    const limit = Number(req.query.limit) || 6;
+    const limit = Number(req.query.limit) || 12;
     const page = Number(req.query.page) || 1;
 
     const searchRegExp = new RegExp(".*" + search + ".*", "i");
