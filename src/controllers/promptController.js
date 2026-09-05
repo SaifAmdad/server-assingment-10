@@ -249,11 +249,9 @@ const getAllPromptsByAdmin = async (req, res) => {
       };
     }
 
-    const prompts = await PromptModel.find(filter, {})
-      .limit(limit)
-      .skip((page - 1) * limit);
+    const prompts = await PromptModel.find();
 
-    const totalPrompts = await PromptModel.find(filter).countDocuments();
+    const totalPrompts = await PromptModel.find().countDocuments();
 
     res.status(200).send({
       success: true,
